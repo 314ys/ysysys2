@@ -230,6 +230,37 @@
   .bdg{position:absolute;top:-10px;right:-10px;min-width:30px;height:30px;padding:0 8px;box-sizing:border-box;border-radius:15px;background:#ee4a4a;color:#fff;font:600 17px/30px sans-serif;text-align:center;z-index:2}
   .hsearch{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(var(--hb) + 122px);display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:22px;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#fff;font-size:15px}
 
+  /* ================= 알림 센터 ================= */
+  #home{touch-action:none}
+  #shade{position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;color:#fff;background:rgba(8,14,18,.58);backdrop-filter:blur(26px) brightness(.85);-webkit-backdrop-filter:blur(26px) brightness(.85);transform:translateY(-102%);transition:transform .38s cubic-bezier(.2,.8,.2,1);padding-top:calc(env(safe-area-inset-top) + 12px);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+  #shade.open{transform:none}
+  .shclock{flex:none;text-align:center;padding-bottom:6px}
+  #shDate{font-size:20px;font-weight:600;color:rgba(200,225,230,.9)}
+  #shTime{font-size:88px;font-weight:700;letter-spacing:-2px;line-height:1.05;color:rgba(190,215,220,.5)}
+  #shBody{flex:1;min-height:0;overflow-y:auto;padding:8px 12px calc(var(--hb) + 24px)}
+  .shhd{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 12px;font-size:26px;font-weight:600}
+  .shx{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:18px;display:grid;place-items:center;padding:0;flex:none}
+  .shgh{display:flex;align-items:center;gap:8px;padding:8px 6px 10px;font-size:24px;font-weight:600}
+  .shgh .sp{flex:1}
+  .shpill{border:0;border-radius:20px;background:rgba(255,255,255,.18);color:#fff;padding:9px 16px;font-size:15px}
+  .shempty{text-align:center;opacity:.6;padding:40px 0;font-size:16px}
+  .ntcard{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:26px;background:rgba(62,66,68,.66);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.14);margin-bottom:8px;cursor:pointer;position:relative;z-index:2}
+  .niw{position:relative;flex:none}
+  .nic{width:46px;height:46px;border-radius:11px;display:grid;place-items:center;overflow:hidden;color:#fff;font-weight:700;font-size:18px}
+  .nic svg{width:26px;height:26px}
+  .nic img{width:100%;height:100%;object-fit:cover}
+  .nic .calico b{font-size:9px;margin-bottom:1px}.nic .calico span{font-size:22px}
+  .ncnt{position:absolute;top:-7px;left:-7px;min-width:22px;height:22px;border-radius:11px;background:#fff;color:#222;font:700 13px/22px sans-serif;text-align:center;z-index:3;padding:0 5px;box-sizing:border-box}
+  .nbd{flex:1;min-width:0}
+  .ntrow{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .ntrow b{font-size:16px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ntrow span{font-size:13px;opacity:.65;flex:none}
+  .nbd p{margin:2px 0 0;font-size:15px;line-height:1.38;opacity:.92;white-space:pre-wrap;word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .nstackwrap{margin-bottom:14px}
+  .nstackwrap .ntcard{margin-bottom:0}
+  .nl{height:9px;margin:0 16px;border-radius:0 0 18px 18px;background:rgba(62,66,68,.5);border:1px solid rgba(255,255,255,.1);border-top:0}
+  .nl2{margin:0 30px;height:8px;background:rgba(62,66,68,.34)}
+
   /* ================= 피드 ================= */
   #app-feed{background:#fff}
   .post{border-bottom:.5px solid var(--line);padding-bottom:12px}
@@ -656,6 +687,12 @@
     <div class="form" id="shForm"></div>
   </section>
 
+  <!-- 알림 센터 -->
+  <div id="shade">
+    <div class="shclock" id="shClock"><div id="shDate"></div><div id="shTime"></div></div>
+    <div id="shBody"></div>
+  </div>
+
   <div id="hb"><i></i></div>
   <div class="toast" id="toast"></div>
 </div>
@@ -677,7 +714,7 @@
   let chats = DB.get('chats',[]), posts = DB.get('posts',[]), notes = DB.get('notes',[]),
       photos = DB.get('photos',[]), recents = DB.get('recents',[]), contacts = DB.get('contacts',[]);
   /* ---------- 기본 데이터 (링크로 들어온 모든 사람에게 처음부터 보임) ---------- */
-  const SEED_VERSION = 'v8';     // 아래 데이터를 고친 뒤 'v2', 'v3'… 로 올리면 모두에게 새로 반영돼요
+  const SEED_VERSION = 'v9';     // 아래 데이터를 고친 뒤 'v2', 'v3'… 로 올리면 모두에게 새로 반영돼요
   const T = (m,d,h,mi) => new Date(2026,m-1,d,h,mi).getTime();
 
 // 모든 방문자에게 처음부터 표시되는 기본 메모
@@ -829,7 +866,7 @@ DB.set('notes', notes);
   const lock = $('#lock'), PASSCODE = '0114';
   let entered = '';
   function unlock(){ lock.classList.add('gone'); hidePw(); }
-  function relock(){ closeApp(); lock.classList.remove('gone'); }
+  function relock(){ closeShade(); closeApp(); lock.classList.remove('gone'); }
   function showPw(){ entered=''; drawDots(); $('#pw').classList.add('show'); lock.classList.add('pwmode'); }
   function hidePw(){ $('#pw').classList.remove('show'); lock.classList.remove('pwmode'); entered=''; drawDots(); }
   function drawDots(){ $('#dots').querySelectorAll('i').forEach((d,i)=>d.classList.toggle('on', i<entered.length)); $('#pwCancel').textContent = entered.length ? '삭제' : '취소'; }
@@ -1390,6 +1427,78 @@ function flushNote(){
     openApp('calendar');
   });
   refreshCal(); setInterval(refreshCal,30000);
+
+  /* =====================================================
+     알림 센터 (홈 화면에서 위→아래로 쓸어내리면 나와요)
+  ===================================================== */
+  // ▼ 알림 내용을 여기서 마음대로 적으세요. 위에 있을수록 최신이에요.
+  //   id    : 알림마다 서로 다른 이름 (n1, n2 …)
+  //   app   : 묶음 이름. 같은 이름끼리 한 덩어리로 쌓여요
+  //   open  : 눌렀을 때 열 앱 (chat, notes, gallery, phone, calendar, youtube, safari) — 없으면 눌러도 아무 일 없어요
+  //   icon  : 알림 아이콘 이미지 파일명 (없으면 open 앱의 아이콘, 그것도 없으면 글자 동그라미)
+  //   title / body / time : 제목 / 내용 / 시각 (쓴 글자 그대로 나와요. 예: '오후 12:17', '1시간 전')
+  const NOTIFS = [
+    {id:'n1', app:'YouTube',   open:'youtube',     title:'무비어쩌고님이 동영상을 올렸습니다.', body:'무비어쩌고님이 이 마을의 밀랍 인형은 전부 사람이었다 [영화리뷰 결말포함]을(를) 업로드했습니다.', time:'오후 12:17'},
+    {id:'n2', app:'채팅',   open:'chat',     title:'엄마',     body:'아들^^~ 다음 주말에...반찬 가져가...', time:'오후 18:04'},
+    {id:'n3', app:'전화',   open:'phone',     title:'아빠',     body:'부재중 전화',             time:'오후 21:40'},
+    {id:'n4', app:'채팅', open:'chat', title:'아빠', body:'전화는왜 안받냐.엄마가 니연락없다고.걱정 한다.엄마께 전화드려라', time:'50분 전'}
+  ];
+  const NOTIF_VERSION = 'v1';     // 알림을 지웠던 사람에게도 다시 보이게 하려면 'v2', 'v3'… 로 올리세요
+  let gone = DB.get('notifGone',[]); const shOpen = {};
+  if(DB.get('notifVer','') !== NOTIF_VERSION){ gone=[]; DB.set('notifGone',gone); DB.set('notifVer',NOTIF_VERSION); }
+  const saveGone = () => DB.set('notifGone',gone);
+  function nIcon(n){
+    const a=APPS.find(x=>x.id===n.open), src=n.icon || (a&&a.img) || '';
+    if(!a && !src) return '<div class="nic" style="background:'+color(n.app)+'">'+esc(String(n.app||'?')[0])+'</div>';
+    return '<div class="nic" style="background:'+(a?a.bg:color(n.app))+'">'+(a?(a.html?a.html():a.svg):'')+(src?'<img src="'+esc(src)+'" alt="" style="display:none">':'')+'</div>';
+  }
+  const nCard = (n,cnt) => '<div class="ntcard" data-id="'+esc(n.id)+'"><div class="niw">'+nIcon(n)+(cnt?'<i class="ncnt">'+cnt+'</i>':'')+'</div><div class="nbd"><div class="ntrow"><b>'+esc(n.title||'')+'</b><span>'+esc(n.time||'')+'</span></div><p>'+esc(n.body||'')+'</p></div></div>';
+  function renderShade(){
+    const list=NOTIFS.filter(n=>!gone.includes(n.id)), groups=[];
+    list.forEach(n=>{ let g=groups.find(x=>x.app===n.app); if(!g){ g={app:n.app,items:[]}; groups.push(g); } g.items.push(n); });
+    let h='<div class="shhd"><span>알림 센터</span>'+(list.length?'<button class="shx" data-clear="1">✕</button>':'')+'</div>';
+    if(!list.length) h+='<div class="shempty">새로운 알림이 없어요</div>';
+    groups.forEach(g=>{
+      if(g.items.length===1) h+=nCard(g.items[0]);
+      else if(shOpen[g.app]) h+='<div class="shgh"><span>'+esc(g.app)+'</span><span class="sp"></span><button class="shpill" data-fold="'+esc(g.app)+'">간략히 보기</button><button class="shx" data-clearapp="'+esc(g.app)+'">✕</button></div>'+g.items.map(n=>nCard(n)).join('');
+      else h+='<div class="nstackwrap" data-stack="'+esc(g.app)+'">'+nCard(g.items[0],g.items.length)+'<div class="nl nl1"></div><div class="nl nl2"></div></div>';
+    });
+    $('#shBody').innerHTML=h;
+    document.querySelectorAll('#shBody .nic img').forEach(im=>{
+      const show=()=>{ const p=im.parentNode; p.style.background='none'; const sv=p.querySelector('svg'); if(sv) sv.remove(); const ci=p.querySelector('.calico'); if(ci) ci.remove(); im.style.display='block'; };
+      im.addEventListener('load',show); if(im.complete && im.naturalWidth) show();
+    });
+  }
+  function shadeClock(){ const d=new Date(); $('#shDate').textContent=(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAYS[d.getDay()]+')'; $('#shTime').textContent=d.getHours()+':'+pad(d.getMinutes()); }
+  function openShade(){ if(current!==null) return; renderShade(); shadeClock(); $('#shade').classList.add('open'); $('#hb').classList.add('on'); }
+  function closeShade(){ $('#shade').classList.remove('open'); if(current===null) $('#hb').classList.remove('on'); }
+  $('#shBody').addEventListener('click', e=>{
+    const t=e.target;
+    if(t.closest('[data-clear]')){ NOTIFS.forEach(n=>{ if(!gone.includes(n.id)) gone.push(n.id); }); saveGone(); return renderShade(); }
+    const ca=t.closest('[data-clearapp]'); if(ca){ NOTIFS.filter(n=>n.app===ca.dataset.clearapp).forEach(n=>{ if(!gone.includes(n.id)) gone.push(n.id); }); saveGone(); return renderShade(); }
+    const fd=t.closest('[data-fold]'); if(fd){ delete shOpen[fd.dataset.fold]; return renderShade(); }
+    const st=t.closest('[data-stack]'); if(st){ shOpen[st.dataset.stack]=true; return renderShade(); }
+    const c=t.closest('.ntcard'); if(!c) return;
+    const n=NOTIFS.find(x=>x.id===c.dataset.id), ap=n && APPS.find(x=>x.id===n.open);
+    if(ap && !ap.locked && $('#app-'+ap.id)){ closeShade(); $('#app-'+ap.id).style.transformOrigin='50% 50%'; openApp(ap.id); }
+  });
+  $('#shClock').addEventListener('click', closeShade);
+  $('#hb').addEventListener('click', ()=>{ if($('#shade').classList.contains('open')) closeShade(); });
+  document.querySelector('.sb span:last-child').addEventListener('click', openShade);   // 오른쪽 위(배터리)를 눌러도 열려요
+  setInterval(()=>{ if($('#shade').classList.contains('open')) shadeClock(); },10000);
+  /* 쓸어내리기 / 쓸어올리기 */
+  let swY=null, swMode='';
+  $('#phone').addEventListener('pointerdown', e=>{
+    const r=$('#phone').getBoundingClientRect(), y=e.clientY-r.top; swY=null; swMode='';
+    if($('#shade').classList.contains('open')){ if(y>r.height-150){ swY=e.clientY; swMode='close'; } }
+    else if(current===null && lock.classList.contains('gone') && y<90){ swY=e.clientY; swMode='open'; }
+  });
+  $('#phone').addEventListener('pointermove', e=>{
+    if(swY===null) return; const dy=e.clientY-swY;
+    if(swMode==='open' && dy>50){ swY=null; openShade(); }
+    else if(swMode==='close' && dy<-40){ swY=null; closeShade(); }
+  });
+  ['pointerup','pointercancel'].forEach(ev=>$('#phone').addEventListener(ev, ()=>{ swY=null; }));
 
   /* 홈 화면 연락처 위젯 */
   const CW = {name:'송화누나', abbr:'송화'};     // ← 위젯에 띄울 연락처 이름 / 동그라미 안 글자
