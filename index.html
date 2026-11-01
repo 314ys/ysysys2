@@ -232,6 +232,7 @@
 
   /* ================= 알림 센터 ================= */
   #home{touch-action:none}
+  #phone{overscroll-behavior:none}
   #shade{position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;color:#fff;background:rgba(8,14,18,.58);backdrop-filter:blur(26px) brightness(.85);-webkit-backdrop-filter:blur(26px) brightness(.85);transform:translateY(-102%);transition:transform .38s cubic-bezier(.2,.8,.2,1);padding-top:calc(env(safe-area-inset-top) + 12px);touch-action:pan-y;user-select:none;-webkit-user-select:none}
   #shade.open{transform:none}
   .shclock{flex:none;text-align:center;padding-bottom:6px}
@@ -1491,11 +1492,11 @@ function flushNote(){
   $('#phone').addEventListener('pointerdown', e=>{
     const r=$('#phone').getBoundingClientRect(), y=e.clientY-r.top; swY=null; swMode='';
     if($('#shade').classList.contains('open')){ if(y>r.height-150){ swY=e.clientY; swMode='close'; } }
-    else if(current===null && lock.classList.contains('gone') && y<90){ swY=e.clientY; swMode='open'; }
+    else if(current===null && lock.classList.contains('gone') && (y<200 || e.target===$('#home') || e.target===$('#grid'))){ swY=e.clientY; swMode='open'; }
   });
   $('#phone').addEventListener('pointermove', e=>{
     if(swY===null) return; const dy=e.clientY-swY;
-    if(swMode==='open' && dy>50){ swY=null; openShade(); }
+    if(swMode==='open' && dy>35){ swY=null; openShade(); }
     else if(swMode==='close' && dy<-40){ swY=null; closeShade(); }
   });
   ['pointerup','pointercancel'].forEach(ev=>$('#phone').addEventListener(ev, ()=>{ swY=null; }));
