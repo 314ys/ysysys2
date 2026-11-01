@@ -508,7 +508,7 @@
   <section class="app" id="app-youtube">
     <div id="yList">
       <div class="ytbar" id="ytBar">
-        <div class="ytlogo"><img id="ytLogoImg" src="yt-logo.png" alt=""><b id="ytLogoTx">유튜브</b></div>
+        <div class="ytlogo"><img id="ytLogoImg" src="yt-logo.png" alt=""><b id="ytLogoTx">YouTube</b></div>
         <div class="ytic">
           <button id="yAdd" title="영상 추가"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
           <button id="ytBell" title="알림"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg><i id="ytBadge"></i></button>
@@ -706,7 +706,7 @@ https://youtu.be/TSYg83VJqKA?si=XAu3usQlkitCIyzr 웜 바디스`,
   },
   {
     id: 'seed-n3',
-    text: `11/15 
+    text: `11/14 
 
 ☐ 점심: 뭐 먹고싶은지 은글슬쩍 캐내기 
 ☐ 라라랜드 재개봉 - 11/11 예약 미리 3시쯤 
@@ -853,7 +853,7 @@ DB.set('notes', notes);
   const APPS = [
     {id:'chat',   dock:3, name:'채팅',  img:'icon-chat.png',  bg:'linear-gradient(160deg,#4de3b9,#14a085)',
       svg:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 3C6.5 3 2 6.6 2 11c0 2.5 1.4 4.7 3.6 6.2L4.8 21l4.2-2.2c1 .2 2 .3 3 .3 5.5 0 10-3.6 10-8s-4.5-8-10-8z"/><circle cx="8" cy="11" r="1.2" fill="#14a085"/><circle cx="12" cy="11" r="1.2" fill="#14a085"/><circle cx="16" cy="11" r="1.2" fill="#14a085"/></svg>'},
-    {id:'feed',   name:'피드',  locked:true,  img:'icon-feed.png',  bg:'linear-gradient(160deg,#7f5af0,#ff6ac1)',
+    {id:'feed',   name:'Instagram',  locked:true,  img:'icon-feed.png',  bg:'linear-gradient(160deg,#7f5af0,#ff6ac1)',
       svg:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 21s-8-5.2-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.800-8 11-8 11z"/></svg>'},
     {id:'notes',  name:'메모',  img:'icon-notes.png', bg:'linear-gradient(#ffe066,#ffc800)',
       svg:'<svg viewBox="0 0 24 24"><g stroke="#8a6d00" stroke-width="2" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h8"/></g></svg>'},
@@ -863,7 +863,7 @@ DB.set('notes', notes);
       svg:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M6.6 10.8c1.4 2.8 3.800 5.100 6.600 6.600l2.200-2.200c.3-.3.7-.4 1-.2 1.100.4 2.300.6 3.600.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.600 21 3 13.400 3 4c0-.6.4-1 1-1h3.500c.6 0 1 .4 1 1 0 1.300.2 2.500.6 3.600.1.3 0 .7-.2 1z"/></svg>'},
     {id:'calendar', name:'캘린더', bg:'#fff', svg:'',
       html:()=>{ const d=new Date(); return '<div class="calico"><b>'+DAYS[d.getDay()]+'</b><span>'+d.getDate()+'</span></div>'; }},
-    {id:'youtube', name:'유튜브', img:'icon-youtube.png', bg:'#2b2b2e',
+    {id:'youtube', name:'YouTube', img:'icon-youtube.png', bg:'#2b2b2e',
       svg:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M8 5.500v13l11-6.500z"/></svg>'},
     {id:'safari',  dock:2, name:'사파리', img:'icon-safari.png',  bg:'linear-gradient(#ffffff,#e3ecf8)',
       svg:'<svg viewBox="0 0 24 24" fill="none" stroke="#2f7cf6" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>'}
